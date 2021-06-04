@@ -1,4 +1,20 @@
 {
+    "name": "devgeniem/geniem-wp-security-plugin",
+    "type": "wordpress-plugin",
+    "description": "Geniem WP Security Plugin",
+    "authors": [
+        {
+            "name": "Juhani Hakanen",
+            "email": "juhani.hakanen@geniem.com",
+            "homepage": "http://geniem.fi/",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "wordpress"
+    ],
+    "license": "GPL-3.0",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Geniem\\WPSecurityPlugin\\": "src"
