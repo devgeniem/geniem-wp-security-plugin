@@ -29,10 +29,13 @@ class WPSecurityPlugin {
 
     public function execute() {
         $this->clear_duplicate_cron();
-        $this->store_site_url();
-        $this->store_core_version();
-        $this->store_plugin_versions();
-        $this->send_data();
+
+        if ( getenv( 'WP_ENV' ) == 'production' ) {
+            $this->store_site_url();
+            $this->store_core_version();
+            $this->store_plugin_versions();
+            $this->send_data();
+        }
     }
 
     private function clear_duplicate_cron() {
