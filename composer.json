@@ -14,7 +14,7 @@
         "wordpress"
     ],
     "license": "GPL-3.0",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Geniem\\WPSecurityPlugin\\": "src"
