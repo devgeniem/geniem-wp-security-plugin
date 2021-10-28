@@ -30,7 +30,7 @@ class WPSecurityPlugin {
     public function execute() {
         $this->clear_duplicate_cron();
 
-        if ( getenv( 'WP_ENV' ) == 'production' ) {
+        if ( ! empty( getenv( 'GENIEM_WP_SECURITY_PLUGIN_API_KEY' ) ) ) {
             $this->store_site_url();
             $this->store_core_version();
             $this->store_plugin_versions();
