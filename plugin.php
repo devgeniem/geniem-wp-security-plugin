@@ -4,7 +4,7 @@
  * Plugin Name: Geniem WP Security Plugin
  * Plugin URI:  https://github.com/devgeniem/geniem-wp-security-plugin
  * Description: Checks WordPress core and plugin versions and reports them to the dashboard.
- * Version:     1.0.1
+ * Version:     1.1.1
  * Author:      Geniem
  * Author URI:  http://www.geniem.fi/
  */
