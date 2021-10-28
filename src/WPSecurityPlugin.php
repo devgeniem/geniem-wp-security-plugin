@@ -77,6 +77,7 @@ class WPSecurityPlugin {
                 'action' => 'report_versions',
                 'site_url' => $this->site_url,
                 'versions_json' => json_encode( $this->versions ),
+                'environment' => getenv( 'WP_ENV' ),
                 'api_key' => getenv( 'GENIEM_WP_SECURITY_PLUGIN_API_KEY' )
             ];
 
