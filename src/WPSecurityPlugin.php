@@ -6,8 +6,9 @@ class WPSecurityPlugin {
     private $server_url = 'https://dashboard.production.geniem.io/api.php?skip_cache=1';
 
     private $versions = [
-        'core' => null,
-        'plugins' => []
+        'core'    => null,
+        'plugins' => [],
+        'php'     => null,
     ];
 
     private $site_url;
@@ -20,7 +21,7 @@ class WPSecurityPlugin {
         if ( ! wp_next_scheduled( 'geniem_wp_security_plugin_scan' ) ) {
             # Sometimes two request trigger at the same time and this code is run twice
             # generating two hooks. The latter request should clear the first schedule.
-            wp_unschedule_hook('geniem_wp_security_plugin_scan');
+            wp_unschedule_hook( 'geniem_wp_security_plugin_scan' );
             wp_schedule_event( time(), 'twicedaily', 'geniem_wp_security_plugin_scan' );
         }
 
@@ -33,6 +34,7 @@ class WPSecurityPlugin {
         if ( ! empty( getenv( 'GENIEM_WP_SECURITY_PLUGIN_API_KEY' ) ) ) {
             $this->store_site_url();
             $this->store_core_version();
+            $this->store_php_version();
             $this->store_plugin_versions();
             $this->send_data();
         }
@@ -40,7 +42,7 @@ class WPSecurityPlugin {
 
     private function clear_duplicate_cron() {
         if ( substr_count( json_encode( _get_cron_array() ), 'geniem_wp_security_plugin_scan' ) > 1 ) {
-            wp_unschedule_hook('geniem_wp_security_plugin_scan');
+            wp_unschedule_hook( 'geniem_wp_security_plugin_scan' );
         }
     }
 
@@ -52,6 +54,10 @@ class WPSecurityPlugin {
         global $wp_version;
 
         $this->versions['core'] = $wp_version;
+    }
+
+    private function store_php_version() {
+        $this->versions['php'] = phpversion() ?? 'Unknown';
     }
 
     private function store_plugin_versions() {
@@ -71,14 +77,15 @@ class WPSecurityPlugin {
     private function send_data() {
         if ( ! empty( $this->versions['core'] ) &&
              ! empty( $this->versions['plugins'] ) &&
+             ! empty( $this->versions['php'] ) &&
              ! empty( $this->site_url )
         ) {
             $data = [
-                'action' => 'report_versions',
-                'site_url' => $this->site_url,
+                'action'        => 'report_versions',
+                'site_url'      => $this->site_url,
                 'versions_json' => json_encode( $this->versions ),
-                'environment' => getenv( 'WP_ENV' ),
-                'api_key' => getenv( 'GENIEM_WP_SECURITY_PLUGIN_API_KEY' )
+                'environment'   => getenv( 'WP_ENV' ),
+                'api_key'       => getenv( 'GENIEM_WP_SECURITY_PLUGIN_API_KEY' ),
             ];
 
             $ch = curl_init( $this->server_url );
